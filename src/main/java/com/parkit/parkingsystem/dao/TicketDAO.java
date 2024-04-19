@@ -86,4 +86,27 @@ public class TicketDAO {
         }
         return false;
     }
+
+    public boolean ckeckDiscount(Ticket ticket) {
+        boolean isRegularCustomer = false;
+        Connection con = null;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_FIDELITY);
+            ps.setString(1, ticket.getVehicleRegNumber());
+            System.out.println("hello before resultset");
+             ps.execute();
+            System.out.println("hello  i arrived here");
+            isRegularCustomer=true;
+//           return isRegularCustomer;
+            return true;
+
+        }catch (Exception ex){
+            logger.error("Error saving ticket info",ex);
+        }finally {
+            dataBaseConfig.closeConnection(con);
+        }
+return isRegularCustomer;
+    }
+
 }

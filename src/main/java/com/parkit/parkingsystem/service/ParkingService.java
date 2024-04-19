@@ -9,6 +9,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.*;
 import java.util.Date;
 
 public class ParkingService {
@@ -29,9 +30,9 @@ public class ParkingService {
 
     public void processIncomingVehicle() {
         try{
-            ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
+            ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();//should return parkingSpot(1010,CAR,true)
             if(parkingSpot !=null && parkingSpot.getId() > 0){
-                String vehicleRegNumber = getVehichleRegNumber();
+                String vehicleRegNumber = getVehichleRegNumber();//should return "ABCDEF" as vehicleRegNumber
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
@@ -54,7 +55,7 @@ public class ParkingService {
         }
     }
 
-    private String getVehichleRegNumber() throws Exception {
+    public String  getVehichleRegNumber()   {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
@@ -63,8 +64,8 @@ public class ParkingService {
         int parkingNumber=0;
         ParkingSpot parkingSpot = null;
         try{
-            ParkingType parkingType = getVehichleType();
-            parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);
+            ParkingType parkingType = getVehicleType();//should return CAR as parkingType
+            parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);//should return 1010 parkingNumber
             if(parkingNumber > 0){
                 parkingSpot = new ParkingSpot(parkingNumber,parkingType, true);
             }else{
@@ -78,10 +79,10 @@ public class ParkingService {
         return parkingSpot;
     }
 
-    private ParkingType getVehichleType(){
-        System.out.println("Please select vehicle type from menu");
-        System.out.println("1 CAR");
-        System.out.println("2 BIKE");
+    public ParkingType getVehicleType(){
+//        System.out.println("Please select vehicle type from menu");
+//        System.out.println("1 CAR");
+//        System.out.println("2 BIKE");
         int input = inputReaderUtil.readSelection();
         switch(input){
             case 1: {
@@ -99,22 +100,31 @@ public class ParkingService {
 
     public void processExitingVehicle() {
         try{
-            String vehicleRegNumber = getVehichleRegNumber();
-            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+            String vehicleRegNumber = getVehichleRegNumber();//return "ABCDEF" as vehicleRegNumber
+            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);// most recent ticket there should be a vehicle with "ABCDEF" in DB. and it should return the ticket corresponding to this RegNumber
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+            boolean discount = ticketDAO.ckeckDiscount(ticket); // method to check the number of paid tickets > 1
+            System.out.println("chechdiscount is "+discount);
+            fareCalculatorService.calculateFare(ticket, discount);
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
                 System.out.println("Please pay the parking fare:" + ticket.getPrice());
                 System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+
             }else{
                 System.out.println("Unable to update ticket information. Error occurred");
+
             }
         }catch(Exception e){
             logger.error("Unable to process exiting vehicle",e);
         }
+
     }
+
+
+
+
 }

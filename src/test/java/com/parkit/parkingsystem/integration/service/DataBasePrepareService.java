@@ -27,4 +27,23 @@ public class DataBasePrepareService {
     }
 
 
+//    public void saveTicket(){
+//        Connection connection = null;
+//        try{
+//            connection = dataBaseTestConfig.getConnection();
+//
+//            //set ticket in to the database
+//            connection.prepareStatement("INSERT INTO ticket Values (?)").execute();
+//
+//            //clear ticket entries;
+//            connection.prepareStatement("truncate table ticket").execute();
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            dataBaseTestConfig.closeConnection(connection);
+//        }
+//    }
+
+
 }
