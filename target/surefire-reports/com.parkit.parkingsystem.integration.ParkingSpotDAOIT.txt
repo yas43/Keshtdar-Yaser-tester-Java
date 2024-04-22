@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.parkit.parkingsystem.integration.ParkingSpotDAOIT
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.236 s - in com.parkit.parkingsystem.integration.ParkingSpotDAOIT
