@@ -94,12 +94,15 @@ public class TicketDAO {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_FIDELITY);
             ps.setString(1, ticket.getVehicleRegNumber());
-            System.out.println("hello before resultset");
-             ps.execute();
-            System.out.println("hello  i arrived here");
-            isRegularCustomer=true;
-//           return isRegularCustomer;
-            return true;
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                int occurrence = rs.getInt("total");
+                if (occurrence != 0) {
+                    isRegularCustomer = true;
+                    return true;
+                }
+            }
 
         }catch (Exception ex){
             logger.error("Error saving ticket info",ex);

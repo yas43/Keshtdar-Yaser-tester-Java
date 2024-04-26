@@ -62,13 +62,13 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingACar(){
 
-        //given
+        //GIVEN
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        //when a vehicle enter parking
+        //WHEN A VEHICLE ENTER PARKING
         parkingService.processIncomingVehicle();
 
-        //then
+        //THEN
 
         Ticket expectedticket = ticketDAO.getTicket("ABCDEF");
         Ticket responseticket = ticketDAO.getTicket("ABCDEF");
@@ -89,31 +89,23 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingLotExit(){
-        // GIVEN an entering vehicle
+        // GIVEN AN ENTERING VEHICLE
         final String vehicleRegNumber = "ABCDEF";
         ParkingSpot parkingSpot = new ParkingSpot(1010,ParkingType.CAR,true);
 
-//        final Ticket savedTicket = ticketDAO.getTicket(vehicleRegNumber);
-//        final LocalDateTime now = LocalDateTime.now().minusHours(1);
-//        final Date incomingDate = Date.from(now.toInstant(ZoneOffset.UTC));
-//        savedTicket.setInTime(incomingDate);
-//        ticketDAO.saveTicket(savedTicket);
 
-//        parkingService.processIncomingVehicle();
-
-//        final Ticket savedTicket = ticketDAO.getTicket(vehicleRegNumber);
         final LocalDateTime now = LocalDateTime.now().minusHours(2);
-//        final Date incomingDate = Date.from(now.toInstant(ZoneOffset.UTC));
+
         final Date incomingDate = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
 
         Ticket savedTicket = new Ticket();
         savedTicket.setInTime(incomingDate);
         savedTicket.setParkingSpot(parkingSpot);
         savedTicket.setVehicleRegNumber(vehicleRegNumber);
-//        dataBasePrepareService.clearDataBaseEntries();
+
         ticketDAO.saveTicket(savedTicket);
 
-        // When the vehicle is exiting
+        // WHEN THE VEHICLE IS EXITING
 
         parkingService.processExitingVehicle();
 
@@ -126,44 +118,27 @@ public class ParkingDataBaseIT {
         assertNotEquals(0d, responseTicket.getPrice());
         assertNotNull(responseTicket.getOutTime());
 
-        /*
 
 
-//        doThrow().when(ticket).setInTime(new Date(System.currentTimeMillis() - (5*60*60*1000)));
-        testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-//when( new Date()).thenReturn(new Date(System.currentTimeMillis() - (60*60*1000)));  
 
-        parkingService.processExitingVehicle();
         //TODO: check that the fare generated and out time are populated correctly in the database
 
-         Ticket responseTicket = ticketDAO.getTicket("ABCDEF");
-         Double expectedPrice = Fare.CAR_RATE_PER_HOUR*1;
-        System.out.println(responseTicket.getPrice());
-            Assertions.assertEquals(expectedPrice,responseTicket.getPrice(),0.1);
 
-//        Ticket responseTicket = ticketDAO.getTicket("ABCDEF");
-//        ParkingType expectedParkingType = ParkingType.CAR;
 
-//        Assertions.assertTrue(responseTicket.getParkingSpot().isAvailable());
-//        Assertions.assertEquals(1010,parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
 
-         */
     }
 
     @Test
     public void testFareForRegularCustumer(){
-//        Firs Entry (type = CAR , RegisterNumber ="ABCDEF")
+//        FIRST ENTRY-EXIT VEHICLE (type = CAR , RegisterNumber ="ABCDEF")
 
 
-//        dataBasePrepareService.clearDataBaseEntries();
+
         ParkingSpot parkingSpot = new ParkingSpot(1010,ParkingType.CAR,true);
 
-//        parkingSpotDAO.updateParking(parkingSpot);
 
-//        final Ticket FirstTicket = ticketDAO.getTicket(vehicleRegNumber);
-//
+
         final LocalDateTime now = LocalDateTime.now().minusHours(3);
         final Date FirstIncomingDate = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
 
@@ -173,27 +148,22 @@ public class ParkingDataBaseIT {
         Ticket FirstTicket = new Ticket();
         FirstTicket.setInTime(FirstIncomingDate);
         FirstTicket.setOutTime(FirstExitingDate);
-        FirstTicket.setId(1010);
-//        FirstTicket.setOutTime(null);
+
         FirstTicket.setPrice(0);
         FirstTicket.setVehicleRegNumber("ABCDEF");
         FirstTicket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(FirstTicket);
 
-
+        //SECOND ENTRY-EXIT VEHICLE
         final LocalDateTime now__ = LocalDateTime.now().minusHours(1);
         final Date SecondIncomingDate = Date.from(now__.toInstant(OffsetDateTime.now().getOffset()));
 
-//        final LocalDateTime now___ = LocalDateTime.now().minusHours(2);
-//        final Date FirstExitingDate = Date.from(now___.toInstant(OffsetDateTime.now().getOffset()));
+
 
         Ticket SecondTicket = new Ticket();
         SecondTicket.setInTime(SecondIncomingDate);
-//        SecondTicket.setOutTime(FirstExitingDate);
-        SecondTicket.setId(1010);
-//        FirstTicket.setOutTime(null);
-//        SecondTicket.setPrice(0);
+
         SecondTicket.setVehicleRegNumber("ABCDEF");
         SecondTicket.setParkingSpot(parkingSpot);
 
@@ -201,93 +171,35 @@ public class ParkingDataBaseIT {
 
 
 
-        final String vehicleRegNumber = "ABCDEF";
-//        parkingService.processIncomingVehicle();
-////
-//        final Ticket secondTicket = ticketDAO.getTicket(vehicleRegNumber);
-//        final LocalDateTime now__ = LocalDateTime.now().minusHours(1);
-//
-//        final Date incomingDate = Date.from(now__.toInstant(OffsetDateTime.now().getOffset()));
-//        savedTicket.setInTime(incomingDate);
-//
-//        ticketDAO.saveTicket(savedTicket);
-//
-//       // When the vehicle is exiting
-//
+
+
+
+//       //WHEN THE VEHICLE EXITING
+
         parkingService.processExitingVehicle();
+
+        //THEN
 
         double expectedPrice = Fare.CAR_RATE_PER_HOUR*0.95;
         double responsePrice = ticketDAO.getTicket("ABCDEF").getPrice();
-//        System.out.println("yaser  is "+ responsePrice);
-//        System.out.println("gisele is "+expectedPrice);
-        Assertions.assertEquals(expectedPrice ,responsePrice,0.1);
-//
-//
-//
+
+        Assertions.assertEquals(expectedPrice ,responsePrice,0.01);
 
 
 
-//        final LocalDateTime now_ = LocalDateTime.now().plusHours(3);
-//        final Date FirstExitDate = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
-//
-//        FirstTicket.setOutTime(FirstExitDate);
-//
-//
-//        ticketDAO.saveTicket(FirstTicket);
-
-//
-//        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-//        parkingService.processIncomingVehicle();
-
-        //First Exit
-
-//        final Ticket savedTicket = ticketDAO.getTicket(vehicleRegNumber);
-//        final LocalDateTime now = LocalDateTime.now().minusHours(2);
-//        final Date incomingDate = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
-//        savedTicket.setInTime(incomingDate);
-//        dataBasePrepareService.clearDataBaseEntries();
-//        ticketDAO.saveTicket(savedTicket);
-//
-//
-//        parkingService.processExitingVehicle();
-
-        //Second Entry Same Customer
-
-
-//        parkingService.processIncomingVehicle();
-//
-//        final Ticket savedSecondTicket = ticketDAO.getTicket(vehicleRegNumber);
-//        final LocalDateTime now_ = LocalDateTime.now().plusHours(1);
-//        final Date incomingDate_ = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
-//        savedTicket.setInTime(incomingDate);
-//        ticketDAO.saveTicket(savedTicket);
-
-//        parkingService.processIncomingVehicle();
-
-
-        //Second Exit Same Customer
-//        parkingService.processExitingVehicle();
-
-
-//         Ticket customerTicket = ticketDAO.getTicket("ABCDEF");
-//         Double actuallPrice = customerTicket.getPrice();
-//         Double expectedPrice = Fare.CAR_RATE_PER_HOUR*0.95;
-//        assertEquals(expectedPrice,actuallPrice);
 
     }
-    @Disabled
+
     @Test
     public void testForIrregularCustomer(){
-        //        Firs Entry (type = CAR , RegisterNumber ="ABCDEF")
+        // FIRST ENTRY  (type = CAR , RegisterNumber ="ABCDEF")
 
 
-//        dataBasePrepareService.clearDataBaseEntries();
+
         ParkingSpot parkingSpot = new ParkingSpot(1010,ParkingType.CAR,true);
 
-//        parkingSpotDAO.updateParking(parkingSpot);
 
-//        final Ticket FirstTicket = ticketDAO.getTicket(vehicleRegNumber);
-//
+
         final LocalDateTime now = LocalDateTime.now().minusHours(3);
         final Date FirstIncomingDate = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
 
@@ -297,8 +209,7 @@ public class ParkingDataBaseIT {
         Ticket FirstTicket = new Ticket();
         FirstTicket.setInTime(FirstIncomingDate);
         FirstTicket.setOutTime(FirstExitingDate);
-        FirstTicket.setId(1010);
-//        FirstTicket.setOutTime(null);
+
         FirstTicket.setPrice(0);
         FirstTicket.setVehicleRegNumber("FEDCBA");
         FirstTicket.setParkingSpot(parkingSpot);
@@ -306,21 +217,29 @@ public class ParkingDataBaseIT {
         ticketDAO.saveTicket(FirstTicket);
 
 
-
-        final String vehicleRegNumber = "ABCDEF";
-        parkingService.processIncomingVehicle();
-
-        final Ticket savedTicket = ticketDAO.getTicket(vehicleRegNumber);
+        // WHEN ANOTHER VEHICLE GET ENTER
+//
         final LocalDateTime now__ = LocalDateTime.now().minusHours(1);
+        final Date SecondVehicleIncomingDate = Date.from(now__.toInstant(OffsetDateTime.now().getOffset()));
+        final String vehicleRegNumber = "ABCDEF";
 
-        final Date incomingDate = Date.from(now__.toInstant(OffsetDateTime.now().getOffset()));
-        savedTicket.setInTime(incomingDate);
+        Ticket SecondTicket = new Ticket();
+        SecondTicket.setInTime(SecondVehicleIncomingDate);
+        SecondTicket.setVehicleRegNumber(vehicleRegNumber);
+        SecondTicket.setParkingSpot(parkingSpot);
 
-        ticketDAO.saveTicket(savedTicket);
+        ticketDAO.saveTicket(SecondTicket);
 
-        // When the vehicle is exiting
+
 
         parkingService.processExitingVehicle();
+
+        //THEN
+
+        double expectedPrice = Fare.CAR_RATE_PER_HOUR;
+        double responsePrice = ticketDAO.getTicket("ABCDEF").getPrice();
+
+        Assertions.assertEquals(expectedPrice ,responsePrice,0.001);
 
 
     }

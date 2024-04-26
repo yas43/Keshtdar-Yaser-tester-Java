@@ -21,19 +21,14 @@ public class ParkingSpotDAOIT {
     public static void setUp() throws Exception{
         parkingSpotDAO = new ParkingSpotDAO();
         parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
-//        ticketDAO = new TicketDAO();
-//        ticketDAO.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
 
     }
 
     @BeforeEach
     public void setUpPerTest() throws Exception {
-//        lenient().when(inputReaderUtil.readSelection()).thenReturn(1);
-//        lenient().when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
 
-//        parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     }
 
 
@@ -43,7 +38,7 @@ public class ParkingSpotDAOIT {
     @Test
     public void testGetNextAvailableSlot(){
 
-//        dataBasePrepareService.clearDataBaseEntries();
+
 
         //given
         ParkingType parkingType = ParkingType.CAR;
@@ -72,12 +67,10 @@ public class ParkingSpotDAOIT {
         //(parking spot don't exist)
         ParkingSpot parkingSpot2 = new ParkingSpot(1010,ParkingType.CAR,false);
 
-        //when
-//        parkingSpotDAO.updateParking(parkingSpot);
+
 
         //then
-//        System.out.println( parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
-//        Assertions.assertThrows(Exception.class,()->parkingSpotDAO.updateParking(parkingSpot),"hh");
+
         Assertions.assertFalse(parkingSpotDAO.updateParking(parkingSpot));
 
         Assertions.assertTrue(parkingSpotDAO.updateParking(parkingSpot2));

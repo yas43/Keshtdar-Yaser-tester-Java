@@ -80,9 +80,9 @@ public class ParkingService {
     }
 
     public ParkingType getVehicleType(){
-//        System.out.println("Please select vehicle type from menu");
-//        System.out.println("1 CAR");
-//        System.out.println("2 BIKE");
+        System.out.println("Please select vehicle type from menu");
+        System.out.println("1 CAR");
+        System.out.println("2 BIKE");
         int input = inputReaderUtil.readSelection();
         switch(input){
             case 1: {
@@ -105,7 +105,6 @@ public class ParkingService {
             Date outTime = new Date();
             ticket.setOutTime(outTime);
             boolean discount = ticketDAO.ckeckDiscount(ticket); // method to check the number of paid tickets > 1
-            System.out.println("chechdiscount is "+discount);
             fareCalculatorService.calculateFare(ticket, discount);
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();

@@ -80,9 +80,9 @@ public class ParkingServiceTest {
         //GIVEN A BIKE
         when(inputReaderUtil.readSelection()).thenReturn(2);
         final ParkingType expectedResponse = BIKE;
-
+        //WHEN
         final ParkingType response = parkingService.getVehicleType();
-
+        //THEN
         assertEquals(expectedResponse,response);
 
     }
@@ -95,13 +95,17 @@ public class ParkingServiceTest {
     @Test
 
     public void getNextParkingNumberIfAvailable_should_return_a_Car_parking_spot(){
-
+        //GIVEN
          when(inputReaderUtil.readSelection()).thenReturn(1);
 
          when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
 
         ParkingSpot parkingSpotexpect = new ParkingSpot(1, CAR,true);
+
+        //WHEN
         ParkingSpot parkingresponse = parkingService.getNextParkingNumberIfAvailable();
+
+        //THEN
         assertEquals(parkingSpotexpect,parkingresponse);
 
 
@@ -112,12 +116,12 @@ public class ParkingServiceTest {
     @Test
 
     public void getNextParkingNumberIfAvailable_shouldNot_return_parking_spot(){
-
+        //GIVEN
         when(inputReaderUtil.readSelection()).thenReturn(1);
 
         when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(-1);
 
-
+        //WHEN and THEN
          assertNull(parkingService.getNextParkingNumberIfAvailable());
 
 
@@ -128,13 +132,17 @@ public class ParkingServiceTest {
     @Test
 
     public void getNextParkingNumberIfAvailable_should_return_a_Bike_parking_spot(){
-
+        //GIVEN
         when(inputReaderUtil.readSelection()).thenReturn(1);
 
         when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
 
         ParkingSpot parkingSpotexpect = new ParkingSpot(1, BIKE,true);
+
+        //WHEN
         ParkingSpot parkingresponse = parkingService.getNextParkingNumberIfAvailable();
+
+        //THEN
         assertEquals(parkingSpotexpect,parkingresponse);
 
 
@@ -143,47 +151,42 @@ public class ParkingServiceTest {
 
     @Test
 
-    public void getNextParkingNumberIfAvailable_rise_an_exception_ThereIsNoParking(){
+    public void getNextParkingNumberIfAvailable_do_not_rise_an_exception_ThereIsNoParking(){
+        //WHEN
         when(inputReaderUtil.readSelection()).thenReturn(1);
 
         when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(-1);
 
+        //THEN
+//        assertThrows(Exception.class,()->parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class)));
 
-        assertThrows(Exception.class,()->parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class)));
-
-//        assertThrows(Exception.class,()->parkingService.getNextParkingNumberIfAvailable());
+        assertDoesNotThrow (()->parkingService.getNextParkingNumberIfAvailable());
 
     }
 
 
 
     @Test
-
-    public void getNextParkingNumberIfAvailable_rise_an_exception(){
+//how dose it works????
+    public void getNextParkingNumberIfAvailable_do_not_rise_an_exception(){
         when(inputReaderUtil.readSelection()).thenReturn(3);
 
-//        when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
 
-
-//        assertThrows(Exception.class,()->inputReaderUtil.readSelection());
-
-        assertThrows(Exception.class,()->parkingService.getVehicleType());
+        assertNull(parkingService.getNextParkingNumberIfAvailable());
 
     }
 
-//public int test(int a){
-//  return 10/a ;
-//};
 
 
     @Test
 
     public void get_vehichle_regnumber_should_return_a_string(){
+        //GIVEN
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("abcd45");
 
-String message = "abcd45";
-
-assertEquals(message,parkingService.getVehichleRegNumber());
+        String message = "abcd45";
+        //THEN
+        assertEquals(message,parkingService.getVehichleRegNumber());
 
 
     }
@@ -208,7 +211,6 @@ assertEquals(message,parkingService.getVehichleRegNumber());
         // THEN
 
         ArgumentCaptor<Ticket> ticketArgumentCaptor = ArgumentCaptor.forClass(Ticket.class);
-//        verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
         verify(ticketDAO).saveTicket(ticketArgumentCaptor.capture());
         Ticket ticketValue = ticketArgumentCaptor.getValue();
 
@@ -219,49 +221,10 @@ assertEquals(message,parkingService.getVehichleRegNumber());
     }
 
 
-//    @Mock
-//    Ticket tickettest;
-//    @Mock FareCalculatorService fareCalculatorService;
 
 
         @Test
     public void processExitingVehicleTest(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            inputReaderUtil.readVehicleRegistrationNumber();
-//            Assertions.assertEquals("ABCDEF",parkingService.getVehichleRegNumber());
-
-
-
-
-//            Assertions.assertNotNull(ticketDAO.getTicket("ticket"));
-
-
-
-//             when(ticket.getInTime()).thenReturn(new Date(System.currentTimeMillis()-(60*60*1000)));
-
-//             when(ticket.getOutTime()).thenReturn(new Date(System.currentTimeMillis() - (60*60*1000)));
-
-//             Assertions.assertEquals(new Date(System.currentTimeMillis()),ticket.getInTime());
-
 
 
             when(ticketDAO.ckeckDiscount(any(Ticket.class))).thenReturn(false);

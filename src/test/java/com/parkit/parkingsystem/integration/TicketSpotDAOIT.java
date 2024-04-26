@@ -17,21 +17,13 @@ import static org.mockito.Mockito.lenient;
 
 public class TicketSpotDAOIT {
     private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
-//    private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
 
     private static Ticket ticket;
-//
-//    @Mock
-//    private static InputReaderUtil inputReaderUtil;
-//
-//    private ParkingService parkingService;
-//
+
     @BeforeAll
     public static void setUp() throws Exception{
-//        parkingSpotDAO = new ParkingSpotDAO();
-//        parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
         ticketDAO = new TicketDAO();
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
@@ -42,12 +34,7 @@ public class TicketSpotDAOIT {
 //
     @BeforeEach
     public void setUpPerTest() throws Exception {
-//        lenient().when(inputReaderUtil.readSelection()).thenReturn(1);
-//        lenient().when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
-//
-//        parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-
     }
 
 
@@ -99,7 +86,7 @@ public class TicketSpotDAOIT {
         final Date outcommingTime = Date.from(now.toInstant(OffsetDateTime.now().getOffset()));
         ticket.setParkingSpot(parkingSpot);
         ticket.setInTime(incommingTime);
-//        ticket.setId(1);
+
 
         ticket.setVehicleRegNumber("AB45cD");
 
@@ -118,7 +105,7 @@ public class TicketSpotDAOIT {
                 ticketSaved.setOutTime(outcommingTime);
                 ticketSaved.setPrice(12.5);
 
-//        System.out.println(ticket.getPrice());
+
 
                 ticketDAO.updateTicket(ticketSaved);
 
@@ -134,11 +121,7 @@ public class TicketSpotDAOIT {
         Assertions.assertNotNull(responseTicket.getInTime());
         Assertions.assertEquals(expectedregnumber,responseTicket.getVehicleRegNumber());
         Assertions.assertNotNull(responseTicket);
-//        Assertions.assertDoesNotThrow(()->ticketDAO.saveTicket(ticket));
-//        Assertions.assertDoesNotThrow(()->ticketDAO.getTicket("AB45cD"));
-//        Assertions.assertFalse(ticketDAO.saveTicket(null));
-//        Assertions.assertDoesNotThrow(()->ticketDAO.getTicket(null));
-//        Assertions.assertDoesNotThrow(()->ticketDAO.saveTicket(null));
+
         
     }
 }
